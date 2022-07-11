@@ -23,6 +23,11 @@ pip install -r requirements.txt
 python3 main.py
 ```
 
+# Support
+
+Discord: HEXTER#8057
+https://dsc.gg/besttailor
+
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [mongodb]: https://img.shields.io/badge/mongodb-589636?style=for-the-badge&logo=mongodb&logoColor=white
