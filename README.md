@@ -25,6 +25,8 @@ python3 main.py
 
 # Support
 
+Contact me if you are looking for bot setup, hosting, changes etc.
+
 Discord: HEXTER#8057
 https://dsc.gg/besttailor
 
