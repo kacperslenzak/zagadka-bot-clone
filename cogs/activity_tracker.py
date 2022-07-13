@@ -1,6 +1,7 @@
 import discord
 from discord import Member
 from discord.ext import commands, tasks
+from discord.utils import get
 
 
 class Points(commands.Cog):
@@ -78,9 +79,17 @@ class Points(commands.Cog):
         elif donator_1 in msg.author.roles:
             boosty.append(0.05)
 
-        if msg.author.activity and 'discord.gg/zagadka' in (msg.author.activity.name or ''):
+        if msg.author.activity and 'dsc.gg/patelka' in (msg.author.activity.name or ''):
 
-            boosty.append(0.10)
+            boosty.append(0.25)
+            await msg.author.add_roles(get(msg.guild.roles, name='✦'))
+
+        else:
+            try:
+                await msg.author.remove_roles(get(msg.guild.roles, name='✦'))
+            except:
+                pass
+
 
         points *= sum(boosty)
 
