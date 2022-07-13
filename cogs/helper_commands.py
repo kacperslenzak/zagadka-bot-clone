@@ -1,3 +1,5 @@
+import asyncio
+
 from discord.ext import commands
 from discord.utils import get
 import discord
@@ -36,6 +38,16 @@ class HelperCommands(commands.Cog):
             return
 
         await user.remove_roles(mutelive_role)
+
+    @commands.command(name='clean')
+    @commands.has_guild_permissions(administrator=True)
+    async def clean(self, ctx, user: discord.Member = None):
+        if not user:
+            return
+
+        asyncio.ensure_future(
+            ctx.channel.purge(limit=200, check=lambda msg: msg.author == user)
+        )
 
 
 def setup(client):
