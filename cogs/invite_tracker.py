@@ -96,41 +96,41 @@ class Zaproszenia(commands.Cog):
                     elif invite['invite_type'] == InviteType.LEAVE.value:
                         regular -= 1
 
-                    invite.inviter = get(member.guild.members, id=int(invite['invited_by']))
+                    inviter = get(member.guild.members, id=int(invite['invited_by']))
 
                 # TODO usuń poprzednie role, jeśli dałeś nową
                 # TODO przy wychodzeniu użytkownika również sprawdzaj czy wypada zabrać/dać role
 
 
                 if regular >= 2048:
-                    await invite.inviter.add_roles(boost2048_invite)
+                    await inviter.add_roles(boost2048_invite)
 
                 elif regular >= 1024:
-                    await invite.inviter.add_roles(boost1024_invite)
+                    await inviter.add_roles(boost1024_invite)
 
                 elif regular >= 512:
-                    await invite.inviter.add_roles(boost512_invite)
+                    await inviter.add_roles(boost512_invite)
 
                 elif regular >= 256:
-                    await invite.inviter.add_roles(boost256_invite)
+                    await inviter.add_roles(boost256_invite)
 
                 elif regular >= 128:
-                    await invite.inviter.add_roles(boost128_invite)
+                    await inviter.add_roles(boost128_invite)
 
                 elif regular >= 64:
-                    await invite.inviter.add_roles(boost64_invite)
+                    await inviter.add_roles(boost64_invite)
 
                 elif regular >= 16:
-                    await invite.inviter.add_roles(boost16_invite)
+                    await inviter.add_roles(boost16_invite)
 
                 elif regular >= 8:
-                    await invite.inviter.add_roles(boost8_invite)
+                    await inviter.add_roles(boost8_invite)
 
                 elif regular >= 4:
-                    await invite.inviter.add_roles(boost4_invite)
+                    await inviter.add_roles(boost4_invite)
 
                 elif regular >= 2:
-                    await invite.inviter.add_roles(boost2_invite)
+                    await inviter.add_roles(boost2_invite)
 
                 return
 
