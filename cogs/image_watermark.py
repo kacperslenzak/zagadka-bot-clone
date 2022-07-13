@@ -45,7 +45,10 @@ class ImageWatermark(commands.Cog):
             watermark_data = generate_img(await attachment.read())
             attachments.append(File(watermark_data, attachment.filename))
 
-        await message.delete()
+        try:
+            await message.delete()
+        except:
+            return
 
         webhook = await message.channel.webhooks()
         if not webhook:
