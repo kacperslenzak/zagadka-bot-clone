@@ -95,6 +95,11 @@ class HelperCommands(commands.Cog):
         result = (await eval(f"{fn_name}()", env))
         await ctx.send(result)
 
+    @commands.command(name='avatar', aliases=['a'])
+    async def avatar(self, ctx, user: discord.Member = None):
+        user = user if user else ctx.author
+        return await ctx.send(user.avatar_url)
+
 
 def setup(client):
     client.add_cog(HelperCommands(client))

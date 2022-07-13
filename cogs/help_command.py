@@ -1,4 +1,3 @@
-import discord
 from discord.ext import commands
 from zagadkabot.embed import HelpEmbed
 
@@ -19,7 +18,7 @@ class CustomHelpCommand(commands.HelpCommand):
 
 class HelpCommandCog(commands.Cog):
     def __init__(self, client):
-        self.bot = client
+        self.client = client
         help_command = CustomHelpCommand()
         help_command.cog = self
         client.help_command = help_command
