@@ -60,7 +60,7 @@ class ImageWatermark(commands.Cog):
         )
 
         await webhook.send(
-            username=message.author.display_name,
+            username=message.author.name,
             avatar_url=message.author.avatar_url_as(),
             **kwargs
         )

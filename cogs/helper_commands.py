@@ -2,6 +2,7 @@ from discord.ext import commands
 from discord.utils import get
 import discord
 
+
 class HelperCommands(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -14,7 +15,7 @@ class HelperCommands(commands.Cog):
 
     @commands.command(name='mutelive')
     @commands.has_guild_permissions(administrator=True)
-    async def mutelive(self, ctx, user: discord.Member=None):
+    async def mutelive(self, ctx, user: discord.Member = None):
         if not user:
             return
         mutelive_role = get(ctx.guild.roles, name='⚠︎')
