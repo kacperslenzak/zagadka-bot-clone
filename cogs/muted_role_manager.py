@@ -23,10 +23,6 @@ class MutedRoleManager(commands.Cog):
                 roles = [Object(r.id) for r in after.roles if r not in color_roles]
                 return await before.edit(roles=roles)
 
-        if (text_muted_role in before.roles or image_muted_role in before.roles) and (red_color_role in after.roles or green_color_role in after.roles or blue_color_role in after.roles):
-            roles = [Object(r.id) for r in after.roles if r not in color_roles]
-            return await before.edit(roles=roles)
-
 
 def setup(client):
     client.add_cog(MutedRoleManager(client))
