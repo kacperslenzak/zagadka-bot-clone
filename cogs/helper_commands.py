@@ -3,7 +3,7 @@ import ast
 from discord.ext import commands
 from discord.utils import get
 import discord
-
+import pymongo
 
 def insert_returns(body):
     # insert return stmt if the last expression is a expression statement
@@ -99,6 +99,16 @@ class HelperCommands(commands.Cog):
     async def avatar(self, ctx, user: discord.Member = None):
         user = user if user else ctx.author
         return await ctx.send(user.avatar_url)
+
+    @commands.command(name='top', aliases=['t', 'tm'])
+    async def top(self, ctx):
+        topka = str()
+        async for user in self.client.db.users.find({}).limit(10).sort('points', pymongo.DESCENDING):
+            member = get(ctx.guild.members, id=int(user['_id']))
+            topka += f"{member.name}: {user['points']} \n"
+
+        em = discord.Embed(color=discord.Colour.from_rgb(0, 0, 0,), title="Topka", description=f"```{topka}```")
+        await ctx.send(embed=em)
 
 
 def setup(client):
