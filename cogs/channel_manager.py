@@ -14,12 +14,18 @@ class ChannelManager(commands.Cog):
 
         if (before.channel is None and after.channel is not None) or (before.channel is not None and before.channel is not after.channel):
             if after.channel and after.channel.id in authorized_create_channel_id:
+                if after.channel.category.name.__contains__('max_'):
+                    limit = after.channel.category.name.split('_')[1]
+                else:
+                    limit = 0
                 perms = {'speak': True, 'connect': True, 'priority_speaker': True}
                 created_vc = await after.channel.category.create_voice_channel(
                     name=f"-{member.display_name}",
                     reason=f"Creating channel for {member}",
                     overwrites={member: PermissionOverwrite(**perms)},
-                    bitrate=64527)
+                    bitrate=64527,
+                    user_limit=int(limit)
+                )
 
                 try:
                     await member.move_to(created_vc)

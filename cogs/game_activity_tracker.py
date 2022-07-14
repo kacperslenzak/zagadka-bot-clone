@@ -48,6 +48,5 @@ class GameActivityTracker(commands.Cog):
                         await member.add_roles(Object(self.game_roles[activity.name]))
 
 
-
 def setup(client):
     client.add_cog(GameActivityTracker(client))

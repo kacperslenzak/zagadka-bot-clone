@@ -79,11 +79,10 @@ class Points(commands.Cog):
         elif donator_1 in msg.author.roles:
             boosty.append(0.05)
 
-        if msg.author.activity and 'dsc.gg/patelka' in (msg.author.activity.name or ''):
-
-            boosty.append(0.25)
-            await msg.author.add_roles(get(msg.guild.roles, name='✦'))
-
+        if msg.author.activity:
+            if msg.author.activity.name in ('dsc.gg/patelka', 'discord.gg/patelka', 'DISCORD.GG/PATELKA', '.gg/patelka', '.GG/PATELKA'):
+                boosty.append(0.25)
+                await msg.author.add_roles(get(msg.guild.roles, name='✦'))
         else:
             try:
                 await msg.author.remove_roles(get(msg.guild.roles, name='✦'))

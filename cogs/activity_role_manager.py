@@ -22,7 +22,7 @@ class ActivityRoleManager(commands.Cog):
     @tasks.loop(hours=1)
     async def assign_roles(self):
         ranking = [int(user['_id']) async for user in
-                   self.client.db.users.find({}, {"_id": True}).limit(128).sort('points', pymongo.DESCENDING)]
+                   self.client.db.users.find({}, {"_id": True}).limit(128).sort('points', pymongo.DESCENDING) if type(user['_id']) is str]
 
         guild = self.client.get_guild(self.client.guild_id)
 
