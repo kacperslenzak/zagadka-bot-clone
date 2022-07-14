@@ -83,12 +83,10 @@ class Points(commands.Cog):
             if msg.author.activity.name in ('dsc.gg/patelka', 'discord.gg/patelka', 'DISCORD.GG/PATELKA', '.gg/patelka', '.GG/PATELKA'):
                 boosty.append(0.25)
                 await msg.author.add_roles(get(msg.guild.roles, name='✦'))
-        else:
-            try:
-                await msg.author.remove_roles(get(msg.guild.roles, name='✦'))
-            except:
-                pass
-
+            else:
+                role = get(msg.guild.roles, name='✦')
+                if role in msg.author.roles:
+                    await msg.author.add_roles(get(msg.guild.roles, name='✦'))
 
         points *= sum(boosty)
 
