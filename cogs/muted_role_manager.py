@@ -20,8 +20,11 @@ class MutedRoleManager(commands.Cog):
         color_roles = (red_color_role, green_color_role, blue_color_role)
 
         if (text_muted_role not in before.roles or image_muted_role not in before.roles) and (text_muted_role in after.roles or image_muted_role in after.roles):
-            roles = [Object(r.id) for r in after.roles if r not in color_roles or r not in mute_roles]
-            return await before.edit(roles=roles)
+            try:
+                await after.remove_roles(*color_roles)
+            except Exception as e:
+                channel = guild.get_channel(992577549144170528)
+                await channel.send(e)
 
 
 def setup(client):

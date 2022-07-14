@@ -135,7 +135,8 @@ class Zaproszenia(commands.Cog):
                 return
 
     @commands.Cog.listener()
-    async def on_member_remove(self, member: Member):
+    async def on_raw_member_remove(self, payload):
+        member: Member = payload.user
         channel = self.client.get_channel(member_leave_logs_channel)
         info = await self.client.db.users.find_one(
             {"_id": str(member.id)}, {"invited_by": 1}
@@ -152,10 +153,8 @@ class Zaproszenia(commands.Cog):
                 description=f"Wyszedł {member.mention} zaproszony przez <@{inv}> ({inv})"
             ).set_thumbnail(url=str(member.avatar_url_as(format="png"))).set_footer(text=member.id)
         )
-        await self.client.db.users.update_one(
-            {"_id": str(member.id)}, {"$set": {
-                "invite_type": InviteType.LEAVE.value
-            }}, upsert=True
+        await self.client.db.users.delete_one(
+            {"_id": str(member.id)}
         )
 
     @commands.Cog.listener()

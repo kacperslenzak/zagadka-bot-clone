@@ -110,6 +110,33 @@ class HelperCommands(commands.Cog):
         em = discord.Embed(color=discord.Colour.from_rgb(0, 0, 0,), title="Topka", description=f"```{topka}```")
         await ctx.send(embed=em)
 
+    @commands.command()
+    @commands.has_guild_permissions(administrator=True)
+    async def sync_users(self, ctx):
+        async for user in self.client.db.users.find({}):
+            if type(user['_id']) == str():
+                member = get(ctx.guild.members, id=int(user['_id']))
+                if not member:
+                    self.client.db.users.delete_one({'_id': user['_id']})
+
+    @commands.command()
+    @commands.has_guild_permissions(administrator=True)
+    async def resetpoints(self, ctx, user: discord.Member):
+        if not user:
+            return
+        user = await self.client.db.users.find_one({'_id': str(user.id)})
+        if user:
+            await self.client.db.users.update_one(
+                {"_id": user['_id']}, {"$set": {"points": 0}}
+            )
+
+    @commands.command()
+    @commands.has_guild_permissions(administrator=True)
+    async def everyone(self, ctx):
+        await ctx.message.delete()
+        allowed_mentions = discord.AllowedMentions(everyone=True)
+        return await ctx.send(content="@everyone", allowed_mentions=allowed_mentions)
+
 
 def setup(client):
     client.add_cog(HelperCommands(client))

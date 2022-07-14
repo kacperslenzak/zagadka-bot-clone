@@ -27,7 +27,7 @@ class Points(commands.Cog):
             return
 
         slowa = [word for word in msg.content.strip().split(" ") if word.strip() != ""]
-        points = min(len(slowa) * 10, 50)
+        points = 2 if len(slowa) >= 4 else 1
 
         voter_role = discord.utils.find(lambda r: r.name == '🟡', msg.guild.roles)
         booster_role = discord.utils.find(lambda r: r.name == "♼", msg.guild.roles)

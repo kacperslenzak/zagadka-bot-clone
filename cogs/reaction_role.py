@@ -15,6 +15,16 @@ class ReactionRole(commands.Cog):
         green_role = get(guild.roles, name='🟢')
         blue_role = get(guild.roles, name='🔵')
         roles = [red_role, green_role, blue_role]
+
+        text_muted_role = get(guild.roles, name='⌀')
+        image_muted_role = get(guild.roles, name='☢︎')
+
+        if text_muted_role in payload.member.roles or image_muted_role in payload.member.roles:
+            channel = self.client.get_channel(payload.channel_id)
+            message = await channel.fetch_message(payload.message_id)
+            await message.remove_reaction(payload.emoji, payload.member)
+            return
+
         if payload.channel_id == reaction_role_channel_id:
             current_role = [r for r in payload.member.roles if r in roles]
             if current_role:
