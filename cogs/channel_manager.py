@@ -22,10 +22,12 @@ class ChannelManager(commands.Cog):
                 created_vc = await after.channel.category.create_voice_channel(
                     name=f"-{member.display_name}",
                     reason=f"Creating channel for {member}",
-                    overwrites={member: PermissionOverwrite(**perms)},
+                    overwrites=None,
                     bitrate=64527,
                     user_limit=int(limit)
                 )
+
+                await created_vc.set_permissions(member, overwrite=PermissionOverwrite(**perms))
 
                 try:
                     await member.move_to(created_vc)

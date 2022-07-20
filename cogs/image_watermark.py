@@ -11,7 +11,7 @@ def generate_img(picture) -> io.BytesIO:
     mem = Image.open(io.BytesIO(picture), formats=['JPEG', 'PNG']).convert('RGBA')
     watermark = Image.open('watermark.png').convert('RGBA')
 
-    w = int(mem.width * 0.2)
+    w = int(mem.width * 0.3)
     h = int((watermark.height * w) / watermark.width)
 
     watermark = watermark.resize((w, h))
@@ -63,7 +63,7 @@ class ImageWatermark(commands.Cog):
         )
 
         await webhook.send(
-            username=message.author.name,
+            username=message.author.name+"#"+message.author.discriminator,
             avatar_url=message.author.avatar_url_as(),
             **kwargs
         )

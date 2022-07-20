@@ -56,13 +56,16 @@ class HelperCommands(commands.Cog):
         await user.remove_roles(mutelive_role)
 
     @commands.command(name='clean')
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_guild_permissions(manage_messages=True)
     async def clean(self, ctx, user: discord.Member = None):
         if not user:
             return
 
+        def check_message_author(msg):
+            return msg.author == user or msg.author.name == user.name+"#"+user.discriminator
+
         asyncio.ensure_future(
-            ctx.channel.purge(limit=200, check=lambda msg: msg.author == user)
+            ctx.channel.purge(limit=200, check=check_message_author)
         )
 
     @commands.command(name='eval')
@@ -100,24 +103,36 @@ class HelperCommands(commands.Cog):
         user = user if user else ctx.author
         return await ctx.send(user.avatar_url)
 
-    @commands.command(name='top', aliases=['t', 'tm'])
-    async def top(self, ctx):
+    @commands.command(name='toprep', aliases=['tr'])
+    async def toprep(self, ctx):
+        topka = str()
+        async for user in self.client.db.users.find({}).limit(10).sort('reputation', pymongo.DESCENDING):
+            member = get(ctx.guild.members, id=int(user['_id']))
+            topka += f"{member.name}: {user['reputation']} \n"
+
+        em = discord.Embed(color=discord.Colour.from_rgb(0, 0, 0,), title="Topka Repów", description=f"```{topka}```")
+        await ctx.send(embed=em)
+
+    @commands.command(name='toppoints', aliases=['tp'])
+    async def toppoints(self, ctx):
         topka = str()
         async for user in self.client.db.users.find({}).limit(10).sort('points', pymongo.DESCENDING):
+            print(user)
             member = get(ctx.guild.members, id=int(user['_id']))
             topka += f"{member.name}: {user['points']} \n"
-
-        em = discord.Embed(color=discord.Colour.from_rgb(0, 0, 0,), title="Topka", description=f"```{topka}```")
+        em = discord.Embed(color=discord.Colour.from_rgb(0, 0, 0, ), title="Topka Punktów", description=f"```{topka}```")
         await ctx.send(embed=em)
 
     @commands.command()
     @commands.has_guild_permissions(administrator=True)
     async def sync_users(self, ctx):
-        async for user in self.client.db.users.find({}):
-            if type(user['_id']) == str():
-                member = get(ctx.guild.members, id=int(user['_id']))
-                if not member:
-                    self.client.db.users.delete_one({'_id': user['_id']})
+        async for user in self.client.db.users.find():
+            if isinstance(user['_id'], str):
+                member = ctx.guild.get_member(int(user['_id']))
+                print(member)
+                if member is None:
+                    print(f'Usuwam: {user["_id"]}')
+                    await self.client.db.users.delete_one({'_id': user['_id']})
 
     @commands.command()
     @commands.has_guild_permissions(administrator=True)
@@ -136,6 +151,19 @@ class HelperCommands(commands.Cog):
         await ctx.message.delete()
         allowed_mentions = discord.AllowedMentions(everyone=True)
         return await ctx.send(content="@everyone", allowed_mentions=allowed_mentions)
+
+    @commands.command(name='reload', hidden=True)
+    @commands.is_owner()
+    async def _reload(self, ctx, *, module: str):
+        """Reloads a module."""
+        try:
+            self.client.unload_extension(module)
+            self.client.load_extension(module)
+        except Exception as e:
+            await ctx.send('\N{PISTOL}')
+            await ctx.send('{}: {}'.format(type(e).__name__, e))
+        else:
+            await ctx.send('\N{OK HAND SIGN}')
 
 
 def setup(client):

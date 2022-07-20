@@ -3,6 +3,7 @@ import pymongo
 import discord
 from discord.ext import commands, tasks
 from discord import Object
+from discord.utils import get
 
 
 class ActivityRoleManager(commands.Cog):
@@ -33,6 +34,14 @@ class ActivityRoleManager(commands.Cog):
                 traceback.print_exc()
                 pass
 
+        async def remove_members_from_role(role):
+            try:
+                for member in role.members:
+                    await member.remove_roles(role)
+            except Exception:
+                traceback.print_exc()
+                pass
+
         queue = []
         for i, user_id in enumerate(ranking):
             user = guild.get_member(user_id)
@@ -44,7 +53,12 @@ class ActivityRoleManager(commands.Cog):
                 continue
 
             roles = [Object(r.id) for r in user.roles if r.id not in self.role_ids]
-            roles.append(Object(self.ranking_roles.get(i+1, 128)))
+            role = get(guild.roles, id=self.ranking_roles.get(i+1, 128))
+            roles.append(role)
+
+            if len(role.members) > 1 and user not in role.members:
+                queue.append(self.client.loop.create_task(remove_members_from_role(role)))
+
             queue.append(self.client.loop.create_task(assign_roles(user, roles)))
 
             for action in queue:

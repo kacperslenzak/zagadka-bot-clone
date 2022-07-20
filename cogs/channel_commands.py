@@ -24,7 +24,7 @@ class ChannelCommands(commands.Cog):
     async def limit(self, ctx, limit: int):
         return await channel_command(ctx, "limit", limit)
 
-    @commands.command(aliases=['r'])
+    @commands.command()
     async def reset(self, ctx, user: Optional[discord.Member]):
         return await channel_command(ctx, "reset", user)
 

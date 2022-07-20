@@ -9,7 +9,7 @@ class VoiceActivityTracker(commands.Cog):
     def cog_unload(self):
         self.voice_activity_points.cancel()
 
-    @tasks.loop(minutes=10)
+    @tasks.loop(minutes=30)
     async def voice_activity_points(self):
         guild = self.client.get_guild(self.client.guild_id)
         for channel in guild.voice_channels:

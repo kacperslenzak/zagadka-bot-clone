@@ -64,7 +64,8 @@ class Zaproszenia(commands.Cog):
                         "invited_by": str(inv),
                         "invite_code": invite.code,
                         "invite_type": InviteType.FAKE.value if is_fake else InviteType.REGULAR.value,
-                        "joined_at": int(member.joined_at.timestamp())
+                        "joined_at": int(member.joined_at.timestamp()),
+                        "reputation": 0
                     }}, upsert=True
                 )
 
@@ -135,16 +136,20 @@ class Zaproszenia(commands.Cog):
                 return
 
     @commands.Cog.listener()
-    async def on_raw_member_remove(self, payload):
-        member: Member = payload.user
+    async def on_member_remove(self, member):
+        member: Member
         channel = self.client.get_channel(member_leave_logs_channel)
         info = await self.client.db.users.find_one(
             {"_id": str(member.id)}, {"invited_by": 1}
         )
+
+        await self.client.db.users.delete_one(
+            {"_id": str(member.id)}
+        )
         if not info:
             info = {}
 
-        inv = info.get('invited_by')
+        inv = info.get('invited_by', 'Not Found')
 
         await channel.send(
             embed=Embed(
@@ -152,9 +157,6 @@ class Zaproszenia(commands.Cog):
                 color=Colour.red(),
                 description=f"Wyszedł {member.mention} zaproszony przez <@{inv}> ({inv})"
             ).set_thumbnail(url=str(member.avatar_url_as(format="png"))).set_footer(text=member.id)
-        )
-        await self.client.db.users.delete_one(
-            {"_id": str(member.id)}
         )
 
     @commands.Cog.listener()

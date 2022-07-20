@@ -15,7 +15,7 @@ class MutedRoleManager(commands.Cog):
         red_color_role = get(guild.roles, name='🔴')
         green_color_role = get(guild.roles, name='🟢')
         blue_color_role = get(guild.roles, name='🔵')
-        mute_roles = (text_muted_role, image_muted_role)
+
 
         color_roles = (red_color_role, green_color_role, blue_color_role)
 
