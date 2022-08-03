@@ -28,7 +28,7 @@ python3 main.py
 Contact me if you are looking for bot setup, hosting, changes etc.
 
 Discord: HEXTER#8057
-https://dsc.gg/besttailor
+https://discord.gg/czoperownia
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
