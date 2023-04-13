@@ -27,9 +27,6 @@ python3 main.py
 
 Contact me if you are looking for bot setup, hosting, changes etc.
 
-Discord: HEXTER#8057
-https://discord.gg/czoperownia
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [mongodb]: https://img.shields.io/badge/mongodb-589636?style=for-the-badge&logo=mongodb&logoColor=white
